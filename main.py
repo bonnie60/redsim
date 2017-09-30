@@ -5,7 +5,8 @@ from Components.Torch import *
 from Components.Block import *
 from Renderer import *
 from array2gif import write_gif
-
+from PIL import Image, ImageDraw, ImageFont
+import scipy.misc as sp
 
 size = 18
 cont = Controller(size)
@@ -31,7 +32,13 @@ frames = []
 emptyCount = 0
 for i in range(runtime):
     cont.tick()
-    frames.append(rend.render(0))
+    data = rend.render(0)
+    im = sp.toimage(data)
+    drw = ImageDraw.Draw(im)
+    fnt = ImageFont.truetype('Pillow/Tests/fonts/FreeMono.ttf', 40)
+    drw.text((1, 1), str(i), font=fnt, fill=(0, 0, 255, 255))
+    data = sp.fromimage(im)
+    frames.append(data)
     if not cont.toUpdate:
         emptyCount += 1
     else:
