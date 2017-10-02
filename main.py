@@ -8,24 +8,23 @@ from array2gif import write_gif
 from PIL import Image, ImageDraw, ImageFont
 import scipy.misc as sp
 import numpy as np
+from Interface import Interface
+
 
 size = 18
 cont = Controller(size)
 rend = Renderer(cont)
+interface = Interface(cont)
 
 for x in range(1, size-1):
     for z in range(1, size-1):
-        comp = Dust(x, 0, z, cont)
-        cont.components[x][0][z] = comp
+        interface.addDust(x, 0, z)
 
 for x in range(2, size-2):
     for z in range(2, size-2):
-        comp = Block(x, 0, z, cont)
-        cont.components[x][0][z] = comp
+        interface.addBlock(x, 0, z)
 
-comp = Torch(1, 0, 1, cont)
-cont.components[1][0][1] = comp
-comp.scheduleUpdate()
+interface.addTorch(1, 0, 1).scheduleUpdate()
 
 
 # Write to gif
