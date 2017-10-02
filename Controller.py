@@ -6,32 +6,30 @@ class Controller:
     components = []
     worldSize = int
 
-    def scheduleUpdate(self, comp):
+    def scheduleUpdate(self, comp, time):
         if comp in self.toUpdate:
             return
-        self.toUpdate[comp] = 1
+        self.toUpdate[comp] = time
 
     def __init__(self, size):
         self.worldSize = size
         self.components = self.components = [[[Base(i, j, k, self) for k in range(self.worldSize)] for j in range(self.worldSize)] for i in range(self.worldSize)]
 
     def tick(self):
-        toDel = []
-        updateCpy = self.toUpdate.copy()
-        for k in updateCpy.keys():
-            if updateCpy[k] is 0:
-                k.update()
-                toDel.append(k)
-            if 0 not in updateCpy.values():
-                updateCpy[k] -= 1
-        print(updateCpy)
-        for d in toDel:
-            del updateCpy[d]
-            del self.toUpdate[d]
-        print(updateCpy)
-        self.toUpdate.update(updateCpy)
-        if 0 in self.toUpdate.values():
-            self.tick()
+        while 0 in self.toUpdate.values():
+            copy = self.toUpdate.copy()
+            for k in copy.keys():
+                if copy[k] is 0:
+                    k.update()
+                    self.toUpdate[k] -= 1
+        toDelete = []
+        for k in self.toUpdate.keys():
+            if self.toUpdate[k] < 0:
+                toDelete.append(k)
+        for k in toDelete:
+            del self.toUpdate[k]
+        for k in self.toUpdate.keys():
+            self.toUpdate[k] -= 1
 
     def getComponent(self, x, y, z):
         try:

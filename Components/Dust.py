@@ -148,3 +148,6 @@ class Dust(Base):
                 self.westComp().scheduleUpdate()
             if self.powers(self.bottomComp()) and not self.bottomComp().isPowered:
                 self.bottomComp().scheduleUpdate()
+
+    def scheduleUpdate(self):
+        self.cont.scheduleUpdate(self, 0)

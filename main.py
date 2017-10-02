@@ -7,6 +7,7 @@ from Renderer import *
 from array2gif import write_gif
 from PIL import Image, ImageDraw, ImageFont
 import scipy.misc as sp
+import numpy as np
 
 size = 18
 cont = Controller(size)
@@ -26,6 +27,7 @@ comp = Torch(1, 0, 1, cont)
 cont.components[1][0][1] = comp
 comp.scheduleUpdate()
 
+
 # Write to gif
 runtime = 200
 frames = []
@@ -33,9 +35,11 @@ emptyCount = 0
 for i in range(runtime):
     cont.tick()
     data = rend.render(0)
+    data = sp.imrotate(data, 180)
+    data = np.fliplr(data)
     im = sp.toimage(data)
     drw = ImageDraw.Draw(im)
-    fnt = ImageFont.truetype('Pillow/Tests/fonts/FreeMono.ttf', 40)
+    fnt = ImageFont.truetype('DroidSansMono.ttf', 40)
     drw.text((1, 1), str(i), font=fnt, fill=(0, 0, 255, 255))
     data = sp.fromimage(im)
     frames.append(data)
@@ -46,5 +50,5 @@ for i in range(runtime):
     if emptyCount > 3:
         break
 
-rend.gif('output.gif', frames, fps=30)
+rend.gif('output.gif', frames, fps=1)
 

@@ -22,6 +22,7 @@ class Block(Base):
         if self.isPowered and not self.poweredByAdjacent():
             self.isPowered = False
             self.isPoweringStrong = False
+            self.isPowering = False
             self.updateAdjacent()
         if not self.isPowered and self.poweredByAdjacent():
             self.isPowered = True
@@ -31,3 +32,7 @@ class Block(Base):
     def checkPower(self):
         if self.bottomComp().compType is Component.TORCH and self.bottomComp().powers(self):
             self.isPoweringStrong = True
+        self.isPowering = True
+
+    def scheduleUpdate(self):
+        self.cont.scheduleUpdate(self, 0)
