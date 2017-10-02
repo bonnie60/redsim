@@ -66,8 +66,6 @@ class Base:
         return self.cont.getComp(self.x, self.y - 1, self.z)
 
     def scheduleUpdate(self):
-        if self.compType is Component.TORCH and self.x is 16:
-            print("test")
         self.cont.scheduleUpdate(self, 1)
 
     def isAdjacent(self, comp):
