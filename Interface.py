@@ -1,8 +1,8 @@
 import Controller
-from Components import Base
-from Components import Block
-from Components import Dust
-from Components import Torch
+from Components.Base import Base
+from Components.Block import Block
+from Components.Dust import Dust
+from Components.Torch import Torch
 
 
 class Interface:
