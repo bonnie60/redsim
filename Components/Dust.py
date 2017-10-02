@@ -129,6 +129,7 @@ class Dust(Base):
         if self.isPowered and not self.poweredByAdjacent():
             self.isPowered = False
             self.isPowering = False
+            self.updateAdjacent()
         if not self.isPowered and self.poweredByAdjacent():
             self.isPowered = True
             self.isPowering = True

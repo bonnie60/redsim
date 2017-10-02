@@ -24,7 +24,14 @@ for x in range(2, size-2):
     for z in range(2, size-2):
         interface.addBlock(x, 0, z)
 
-interface.addTorch(1, 0, 1).scheduleUpdate()
+interface.addTorch(4, 0, 4, 3, 0, 4).scheduleUpdate()
+interface.addDust(5, 0, 4)
+interface.addTorch(6, 0, 5, 6, 0, 4)
+interface.addDust(6, 0, 6)
+interface.addDust(5, 0, 6)
+interface.addBlock(4, 0, 6)
+cont.scheduleUpdate(interface.addTorch(3, 0, 6, 4, 0, 6), 2)
+interface.addDust(3, 0, 5)
 
 
 # Write to gif

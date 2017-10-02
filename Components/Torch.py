@@ -22,6 +22,7 @@ class Torch(Base):
             self.isPowered = True
             self.isPowering = False
             self.scheduleUpdate()
+            self.updateAdjacent()
         if not self.attachedComp().powers(self) and self.isPowered:
             self.isPowered = False
             self.isPowering = True
