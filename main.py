@@ -35,7 +35,7 @@ interface.addDust(3, 0, 5)
 
 
 # Write to gif
-runtime = 200
+runtime = 40
 frames = []
 emptyCount = 0
 for i in range(runtime):
@@ -55,6 +55,7 @@ for i in range(runtime):
         emptyCount = 0
     if emptyCount > 3:
         break
+    print("Processing tick " + str(i))
 
-rend.gif('output.gif', frames, fps=1)
+rend.gif('output.gif', frames, fps=20)
 

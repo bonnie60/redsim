@@ -35,6 +35,7 @@ class DustDirection(Enum):
 class Dust(Base):
     compType = Component.DUST
     direction = DustDirection.NONE
+    powerSources = []
 
     @staticmethod
     def shouldConnect(compType):
@@ -126,6 +127,19 @@ class Dust(Base):
 
     def update(self):
         self.checkDirection()
+        self.powerSources = []
+        if self.poweredByBottomComp():
+            self.powerSources.append(self.bottomComp())
+        if self.poweredByNorthComp():
+            self.powerSources.append(self.northComp())
+        if self.poweredByEastComp():
+            self.powerSources.append(self.eastComp())
+        if self.poweredBySouthComp():
+            self.powerSources.append(self.southComp())
+        if self.poweredByWestComp():
+            self.powerSources.append(self.westComp())
+        if self.poweredByTopComp():
+            self.powerSources.append(self.topComp())
         if self.isPowered and not self.poweredByAdjacent():
             self.isPowered = False
             self.isPowering = False
@@ -149,6 +163,20 @@ class Dust(Base):
                 self.westComp().scheduleUpdate()
             if self.powers(self.bottomComp()) and not self.bottomComp().isPowered:
                 self.bottomComp().scheduleUpdate()
+            if self.poweredOnlyByDust():
+                self.isPowered = False
+                self.isPowering = False
+                self.updateAdjacent()
 
     def scheduleUpdate(self):
         self.cont.scheduleUpdate(self, 0)
+
+    def poweredOnlyByDust(self):
+        localCopy = self.powerSources.copy()
+        for i in range(16):
+            for e in localCopy:
+                if e.compType is Component.DUST:
+                    localCopy = localCopy + e.powerSources
+                else:
+                    return False
+        return True

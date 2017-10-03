@@ -65,6 +65,24 @@ class Base:
     def bottomComp(self):
         return self.cont.getComp(self.x, self.y - 1, self.z)
 
+    def poweredByNorthComp(self):
+        return self.cont.getComp(self.x + 1, self.y, self.z).powers(self)
+
+    def poweredBySouthComp(self):
+        return self.cont.getComp(self.x - 1, self.y, self.z).powers(self)
+
+    def poweredByEastComp(self):
+        return self.cont.getComp(self.x, self.y, self.z + 1).powers(self)
+
+    def poweredByWestComp(self):
+        return self.cont.getComp(self.x, self.y, self.z - 1).powers(self)
+
+    def poweredByTopComp(self):
+        return self.cont.getComp(self.x, self.y + 1, self.z).powers(self)
+
+    def poweredByBottomComp(self):
+        return self.cont.getComp(self.x, self.y - 1, self.z).powers(self)
+
     def scheduleUpdate(self):
         self.cont.scheduleUpdate(self, 1)
 
