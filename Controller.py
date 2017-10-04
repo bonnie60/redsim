@@ -1,5 +1,9 @@
 from Components.Base import Base
-
+from Renderer import *
+from array2gif import write_gif
+from PIL import Image, ImageDraw, ImageFont
+import scipy.misc as sp
+import numpy as np
 
 class Controller:
     toUpdate = {}
@@ -42,3 +46,30 @@ class Controller:
             return self.components[x][y][z]
         except:
             return Base(0, 0, 0, self)
+
+    def simulate(self, ticks, output, fps=24, drawTicks=True):
+        rend = Renderer(self)
+        runtime = ticks
+        frames = []
+        emptyCount = 0
+        for i in range(runtime):
+            self.tick()
+            data = rend.render(0)
+            data = sp.imrotate(data, 180)
+            data = np.fliplr(data)
+            im = sp.toimage(data)
+            drw = ImageDraw.Draw(im)
+            fnt = ImageFont.truetype('DroidSansMono.ttf', 40)
+            if drawTicks:
+                drw.text((1, 1), str(i), font=fnt, fill=(0, 0, 255, 255))
+            data = sp.fromimage(im)
+            frames.append(data)
+            if not self.toUpdate:
+                emptyCount += 1
+            else:
+                emptyCount = 0
+            if emptyCount > 3:
+                break
+            print("Processing tick " + str(i))
+
+        rend.gif(output, frames, fps=fps)

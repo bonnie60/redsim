@@ -4,10 +4,6 @@ from Components.Dust import *
 from Components.Torch import *
 from Components.Block import *
 from Renderer import *
-from array2gif import write_gif
-from PIL import Image, ImageDraw, ImageFont
-import scipy.misc as sp
-import numpy as np
 from Interface import Interface
 
 
@@ -33,29 +29,5 @@ interface.addBlock(4, 0, 6)
 cont.scheduleUpdate(interface.addTorch(3, 0, 6, 4, 0, 6), 2)
 interface.addDust(3, 0, 5)
 
-
-# Write to gif
-runtime = 40
-frames = []
-emptyCount = 0
-for i in range(runtime):
-    cont.tick()
-    data = rend.render(0)
-    data = sp.imrotate(data, 180)
-    data = np.fliplr(data)
-    im = sp.toimage(data)
-    drw = ImageDraw.Draw(im)
-    fnt = ImageFont.truetype('DroidSansMono.ttf', 40)
-    drw.text((1, 1), str(i), font=fnt, fill=(0, 0, 255, 255))
-    data = sp.fromimage(im)
-    frames.append(data)
-    if not cont.toUpdate:
-        emptyCount += 1
-    else:
-        emptyCount = 0
-    if emptyCount > 3:
-        break
-    print("Processing tick " + str(i))
-
-rend.gif('output.gif', frames, fps=20)
+cont.simulate(40, 'output.gif', fps=20)
 
