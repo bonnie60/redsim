@@ -179,4 +179,5 @@ class Dust(Base):
                     localCopy = localCopy + e.powerSources
                 else:
                     return False
+            localCopy = list(set(localCopy))
         return True
