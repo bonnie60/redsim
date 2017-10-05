@@ -1,9 +1,10 @@
 import numpy as np
-import scipy.misc as smp
-from Controller import Controller
+import scipy.misc as sp
+import Controller
 from Components.Base import Component
 import os
 from moviepy.editor import ImageSequenceClip
+from PIL import Image, ImageDraw, ImageFont
 
 
 class Renderer:
@@ -118,3 +119,14 @@ class Renderer:
         clip = ImageSequenceClip(array, fps=fps)
         clip.write_gif(filename, fps=fps)
         return clip
+
+    def toImage(self, layer, tickNumber, drawTicks=True):
+        data = self.render(layer)
+        data = sp.imrotate(data, 180)
+        data = np.fliplr(data)
+        im = sp.toimage(data)
+        drw = ImageDraw.Draw(im)
+        fnt = ImageFont.truetype('DroidSansMono.ttf', 40)
+        if drawTicks:
+            drw.text((1, 1), str(tickNumber), font=fnt, fill=(0, 0, 255, 255))
+        return sp.fromimage(im)

@@ -8,26 +8,32 @@ from Interface import Interface
 
 
 size = 18
-cont = Controller(size)
-rend = Renderer(cont)
+cont = Controller.Controller(size)
 interface = Interface(cont)
 
-for x in range(1, size-1):
-    for z in range(1, size-1):
-        interface.addDust(x, 0, z)
+# XOR Gate
+interface.addBlock(0, 0, 0)
+interface.addBlock(1, 0, 0)
+interface.addBlock(2, 0, 0)
+interface.addBlock(1, 0, 1)
+interface.addBlock(0, 0, 3)
+interface.addBlock(2, 0, 3)
 
-for x in range(2, size-2):
-    for z in range(2, size-2):
-        interface.addBlock(x, 0, z)
+interface.addTorch(0, 1, 0)
+interface.addTorch(2, 1, 0)
+interface.addTorch(0, 0, 1, 0, 0, 0)
+interface.addTorch(2, 0, 1, 2, 0, 0)
+interface.addTorch(1, 0, 2, 1, 0, 1)
+interface.addTorch(0, 0, 4, 0, 0, 3)
+interface.addTorch(2, 0, 4, 2, 0, 3)
 
-interface.addTorch(4, 0, 4, 3, 0, 4).scheduleUpdate()
-interface.addDust(5, 0, 4)
-interface.addTorch(6, 0, 5, 6, 0, 4)
-interface.addDust(6, 0, 6)
-interface.addDust(5, 0, 6)
-interface.addBlock(4, 0, 6)
-cont.scheduleUpdate(interface.addTorch(3, 0, 6, 4, 0, 6), 2)
-interface.addDust(3, 0, 5)
+interface.addDust(1, 1, 0)
+interface.addDust(1, 1, 1)
+interface.addDust(0, 0, 2)
+interface.addDust(2, 0, 2)
+interface.addDust(0, 1, 3)
+interface.addDust(2, 1, 3)
+interface.addDust(1, 0, 4)
 
 cont.simulate(40, 'output.gif', fps=20)
 
