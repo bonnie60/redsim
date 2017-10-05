@@ -1,5 +1,7 @@
 # redsim
 #### Redstone Simulator in python
+# ON PAUSE FOR NOW
+
 ##### Current features:
 Blocks, Torches and Dust
 
